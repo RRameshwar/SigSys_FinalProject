@@ -31,6 +31,7 @@ int maxRead;        // Used for Proportional and Integral Control
 double dt;          // Difference in time between calculations
 
 int delayMils;
+boolean printOn = true;
 
 void setup(){
   pinMode(sensorPin, INPUT);
@@ -68,13 +69,18 @@ void parseSerial(){
   switch(incomingByte){
     case 'P':
       kP = getSerialNum();
+      Serial.println("kP set to " + kP);
     break;
     case 'I':
       kI = getSerialNum();
+      Serial.println("kI set to " + kP);
     break;
     case 'D':
       kD = getSerialNum();
+      Serial.println("kD set to " + kP);
     break;
+    case 'p':
+      switchPrint();
     default: 
       Serial.print("Input not understood: ");
       Serial.println(incomingByte);
@@ -97,6 +103,23 @@ void switchDirection(){
     motor->run(FORWARD);
   else 
     motor->run(BACKWARD);
+}
+
+void switchPrint(){
+  printOn = !printOn;
+}
+
+void printVals(double p, double i, double d){
+  if(!printOn) return;
+
+  int printP = (int) p;
+  int printI = (int) i;
+  int printD = (int) d;
+  int drive = (int) (p + i + d);
+  Serial.print( "P: " + printP);
+  Serial.print(" I: " + printI);
+  Serial.print(" D: " + printD);
+  Serial.println(" Total: " + drive);
 }
 
 void loop(){
@@ -122,6 +145,7 @@ void loop(){
   double d = kD * diff / dt * scaleFactorD;
     
   int drive = (int)(p + i + d);
+  printVals(p, i, d);
   motor->setSpeed(drive);
   
   lastRead = thisRead;
