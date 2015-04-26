@@ -2,11 +2,13 @@ from pygame.locals import *
 import pygame, os, sys
 import serial
 import time
+import matplotlib.pyplot as plt
 pygame.init()
-ser = serial.Serial(0)
+ser = serial.Serial("/dev/ttyACM0", 9600)
 
 WIDTH = 640
 HEIGHT = 480
+data = []
 
 
 class sliderBack():
@@ -84,7 +86,25 @@ bars.append(bar3)
 
 clicked = False
 
+
+plt.plot(data)
+
+
 while True:
+    #read = ser.readline()
+    
+    #try:
+    #     data.append(int(read))
+    # except:
+    #     print 'meh'
+
+    # print read
+    # plt.plot(data)
+    # plt.draw()
+    # plt.ion()
+    # plt.show()
+    
+
     pygame.display.update()
     scr.fill((0, 0, 0))
     
@@ -113,7 +133,9 @@ while True:
         if button.rect.collidepoint(pygame.mouse.get_pos()) and clicked == False:
             clicked = True
             print "P = " + str(P) + "\nI = " + str(I) + "\nD = " + str(D)
-            ser.write(str(P)+str(I)+str(D))
+            ser.write("P"+str(P)+"I"+str(I)+"D"+str(D))
+            print "sent"
+
 
         if not (button.rect.collidepoint(pygame.mouse.get_pos())) and clicked == True:
             clicked = False            
@@ -153,9 +175,9 @@ while True:
                         label_derivative = myfont.render(str(D), 1, (255,0,0))
 
 
-        
 
         
+ 
 
 
     for event in pygame.event.get():

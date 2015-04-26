@@ -86,26 +86,26 @@ void serialEvent(){
   switch(incomingByte){
     case 'P':
       kP = getSerialNum();
-      Serial.print("kP set to ");
+      //Serial.print("kP set to ");
       Serial.println(kP, DEC);
     break;
     case 'I':
       kI = getSerialNum();
-      Serial.print("kI set to ");
-      Serial.println(kI, DEC);
+      //Serial.print("kI set to ");
+      //Serial.println(kI, DEC);
     break;
     case 'D':
       kD = getSerialNum();
-      Serial.print("kD set to ");
-      Serial.println(kD, DEC);
+      //Serial.print("kD set to ");
+      //Serial.println(kD, DEC);
     break;
     // Using a single lowercase p switches the print off.  Just convenience
     case 'p':
       switchPrint();
       break;
-    default: 
-      Serial.print("Input not understood: ");
-      Serial.println(incomingByte);
+    //default: 
+      //Serial.print("Input not understood: ");
+      //Serial.println(incomingByte);
   }
   
 }
@@ -142,14 +142,14 @@ void printVals(double p, double i, double d){
   int printI = (int) i;
   int printD = (int) d;
   int drive = (int) (p + i + d);
-  Serial.print( "P: ");
-  Serial.print(p, 2);
-  Serial.print(" I: ");
-  Serial.print(i, 2);
-  Serial.print(" D: ");
-  Serial.print(d, 2);
-  Serial.print(" Total: ");
-  Serial.println(p + i + d, 3);
+//  Serial.print( "P: ");
+//  Serial.print(p, 2);
+//  Serial.print(" I: ");
+//  Serial.print(i, 2);
+//  Serial.print(" D: ");
+//  Serial.print(d, 2);
+//  Serial.print(" Total: ");
+//  Serial.println(p + i + d, 3);
 }
 
 void loop(){
@@ -184,5 +184,6 @@ void loop(){
   
   // Update and Loop
   lastRead = thisRead;
+  Serial.println(thisRead);
   delay(delayMils);
 }
