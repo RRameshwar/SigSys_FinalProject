@@ -11,6 +11,8 @@ Adafruit_MotorShield AFMS = Adafruit_MotorShield();
 Adafruit_DCMotor *motor = AFMS.getMotor(1);
 int sensorPin = A0;
 
+int count = 0;
+
 // PID constants that can be changed using Serial
 // For example, use "P231" to change P to 231.
 // NOTE: cannot set to negative yet
@@ -55,7 +57,7 @@ void setup(){
   delayMils = (int)(dt * 1000);
   
   // Change these so that the ranges input by the GUI range well.
-  scaleFactorP = 1.0/100;
+  scaleFactorP = 1.0/400;
   scaleFactorI = 1.0/200000;
   scaleFactorD = -1.0/1000;
 }
@@ -167,23 +169,48 @@ void loop(){
   
   // Calculate PID
   int err = error(thisRead);
-  double p = kP * err * scaleFactorP;
-  accumulator += err * dt;
-  double i = kI * accumulator * scaleFactorI;
-  double d = kD * diff / dt * scaleFactorD;
+  double p = scaleFactorP * kP * err;
+  /*
+  Serial.print(kP);
+  Serial.print(" ");
+  Serial.print(err);
+  Serial.print(" ");
+  Serial.println(scaleFactorP);
+  */
   
-  // Ensure D <0
+
+  accumulator += err * dt;
+  double i = scaleFactorI * kI * accumulator;
+  double d = scaleFactorD * kD * diff / dt;
+  
+  // Ensure D < 0
   if(d > 0)
     d *=-1;
     
   // Set Motor speed according to PID
   int drive = (int)(p + i + d);
-  printVals(p, i, d);
+  // printVals(p, i, d);
   constrain(drive, 0, 255);
   motor->setSpeed(drive);
   
   // Update and Loop
   lastRead = thisRead;
-  Serial.println(thisRead);
+  //Serial.println(thisRead+', '+p+', '+i+', '+d);
+  
+  // Prints p, i, d, and Resistor Read in the form:
+  // p,i,d,Resistor
+  
+  count = (count + 1) % 10;
+  Serial.println(p);
+  if(count == 0){
+    Serial.print(p, 2); // Print p with 2 decimal values
+    Serial.print(",");
+    Serial.print(i, 2);
+    Serial.print(",");
+    Serial.print(d, 2);
+    Serial.print(",");
+    Serial.println(thisRead);
+  }
+  
   delay(delayMils);
 }

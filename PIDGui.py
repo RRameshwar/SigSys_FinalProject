@@ -91,19 +91,6 @@ plt.plot(data)
 
 
 while True:
-    #read = ser.readline()
-    
-    #try:
-    #     data.append(int(read))
-    # except:
-    #     print 'meh'
-
-    # print read
-    # plt.plot(data)
-    # plt.draw()
-    # plt.ion()
-    # plt.show()
-    
 
     pygame.display.update()
     scr.fill((0, 0, 0))
