@@ -44,7 +44,7 @@ void setup(){
   // Initialize values
   // Adjusted directly via Serial
   kP = 100; 
-  kI = 0; 
+  kI = 100; 
   kD = 0; 
 
   lastRead = 0;
@@ -200,8 +200,8 @@ void loop(){
   // Prints p, i, d, and Resistor Read in the form:
   // p,i,d,Resistor
   
-  count = (count + 1) % 10;
-  Serial.println(p);
+  count = (count + 1) % 5;
+  //Serial.println(p);
   if(count == 0){
     Serial.print(p, 2); // Print p with 2 decimal values
     Serial.print(",");
